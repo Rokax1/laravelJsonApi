@@ -10,18 +10,14 @@ use Illuminate\Support\Str;
 class Article extends Model
 {
 
-
-
-    /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array
-     */
     protected $guarded = [];
 
+    public $allowedSorts = ['title', 'content'];
+
+    public $type='articles';
 
 
-  public $allowedSorts=['title','content'];
+
 
 
     /**
@@ -36,9 +32,19 @@ class Article extends Model
     ];
 
 
-    // protected $fillable=[
-    //     'title','slug','content','category_id','user_id'
-    // ];
+    public function fields(){
+
+        return [
+            'title'=>$this->title,
+            'slug'=>$this->slug,
+            'content'=>$this->content,
+
+        ];
+
+    }
+
+
+
 
     public function category()
     {
@@ -51,5 +57,41 @@ class Article extends Model
     }
 
 
+// Scopes
 
+
+    public function scopeTitle(Builder $query, $value)
+    {
+
+        return  $query->where('title', 'like', "% $value %");
+    }
+
+    public function scopeContent($query, $value)
+    {
+
+        $query->where('content', 'LIKE', '%' . $value . '%');
+    }
+
+    public function scopeYear(Builder $query, $value)
+    {
+
+        $query->whereYear('created_at', $value);
+    }
+
+    public function scopeMonth(Builder $query, $value)
+    {
+
+        $query->whereMonth('created_at', $value);
+    }
+
+    public function scopeSearch(Builder $query, $values)
+    {
+
+        foreach (Str::of($values)->explode(' ') as $key => $value) {
+            $query->orWhere('title', 'LIKE', "%{$value}%")
+            ->orWhere('content', 'LIKE', "%{$value}%");
+        }
+
+
+    }
 }
