@@ -3,8 +3,10 @@
 namespace Tests\Feature\Articles;
 
 use App\Models\Article;
+use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+
 
 class ListArticleTest extends TestCase
 {
@@ -16,12 +18,106 @@ class ListArticleTest extends TestCase
     public function can_fetch_single_article()
     {
 
-        $this->withoutExceptionHandling();
-        $article =factory(Article::class)->create();
 
-        $response=$this->getJson('api/v1/articles/'.$article->getRouteKey());
 
-        $response->assertSee($article->title);
+        $article = factory(Article::class)->create();
 
+
+
+        $response = $this->getJson(route('api.v1.articles.show', $article));
+
+
+        $response->assertExactJson([
+            'data' => [
+                'type' => 'articles',
+                'id' =>  (string) $article->getRouteKey(),
+                'atribures' => [
+                    'title' => $article->title,
+                    'slug' => $article->slug,
+                    'content' => $article->content,
+
+                ],
+                'links' => [
+                    'self' => route('api.v1.articles.show', $article)
+                ]
+            ]
+        ]);
+    }
+
+
+
+    /** @test  */
+
+    public function can_fetch_all_article()
+    {
+
+        $articles = factory(Article::class)->times(3)->create();
+
+        $response = $this->getJson(route('api.v1.articles.index'));
+
+        $response->assertJsonFragment([
+
+            'data' => [
+
+                [
+                    'type' => 'articles',
+                    'id' =>  (string) $articles[0]->getRouteKey(),
+                    'atribures' => [
+                        'title' => $articles[0]->title,
+                        'slug' => $articles[0]->slug,
+                        'content' => $articles[0]->content,
+
+                    ],
+                    'links' => [
+                        'self' => route('api.v1.articles.show', $articles[0])
+                    ]
+
+                ],
+
+                [
+                    'type' => 'articles',
+                    'id' =>  (string) $articles[1]->getRouteKey(),
+                    'atribures' => [
+                        'title' => $articles[1]->title,
+                        'slug' => $articles[1]->slug,
+                        'content' => $articles[1]->content,
+
+                    ],
+                    'links' => [
+                        'self' => route('api.v1.articles.show', $articles[1])
+                    ]
+
+                ],
+
+                [
+                    'type' => 'articles',
+                    'id' =>  (string) $articles[2]->getRouteKey(),
+                    'atribures' => [
+                        'title' => $articles[2]->title,
+                        'slug' => $articles[2]->slug,
+                        'content' => $articles[2]->content,
+
+                    ],
+                    'links' => [
+                        'self' => route('api.v1.articles.show', $articles[2])
+                    ]
+                ]
+
+
+            ],
+
+
+
+
+        ]);
+
+        $response->assertJsonStructure([
+            'links'=>[
+
+            ],
+            'meta'=>[
+
+            ]
+        ]);
     }
 }
