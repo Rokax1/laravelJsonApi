@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\JsonApi\JsonApiBuilder;
+use App\Api\JsonApiBuilder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\ServiceProvider;
 
