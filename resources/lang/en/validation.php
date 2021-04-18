@@ -117,6 +117,10 @@ return [
     'uploaded' => 'The :attribute failed to upload.',
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
+    'no_underscores'=>'The :attribute not contains underscores.',
+    'no_starting_dashes'=>'The :attribute not starting dashes.',
+    'no_ending_dashes'=>'The :attribute not ending dashes.',
+
 
     /*
     |--------------------------------------------------------------------------

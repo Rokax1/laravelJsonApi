@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use CloudCreativity\LaravelJsonApi\Facades\JsonApi;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('articles','ArticlesController@index')->name('api.v1.articles.index');
+// Route::get('articles','ArticlesController@index')->name('api.v1.articles.index');
 
-Route::get('articles/{article}','ArticlesController@show')->name('api.v1.articles.show');
+// Route::get('articles/{article}','ArticlesController@show')->name('api.v1.articles.show');
+
+JsonApi::register('v1')->routes(function($api){
+
+    $api->resource('articles')->only('create')->middleware('auth');
+    $api->resource('articles')->except('create');
+});

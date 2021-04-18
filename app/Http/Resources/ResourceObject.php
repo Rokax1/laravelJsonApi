@@ -17,7 +17,7 @@ class ResourceObject extends JsonResource
         return [
                 'type' => $this->resource->type,
                 'id' =>  (string) $this->resource->getRouteKey(),
-                'atribures' => $this->resource->fields(),
+                'attributes' => $this->resource->fields(),
                 'links' => [
                     'self' => route('api.v1.'.$this->resource->type.'.show', $this->resource)
                 ]

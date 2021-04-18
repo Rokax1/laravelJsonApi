@@ -30,7 +30,7 @@ class FilterArticlesTest extends TestCase
         //     // $query->bindings;
         //     // $query->time;
         // });
-        $this->getJson($url)
+        $this->jsonApi()->get($url)
             ->assertJsonCount(1, 'data')
             ->assertSee('aprende laravel desde 0')
             ->assertDontSee('other article');
@@ -49,7 +49,7 @@ class FilterArticlesTest extends TestCase
 
         $url = route('api.v1.articles.index', ['filter[content]' => 'laravel']);
 
-        $this->getJson($url)
+        $this->jsonApi()->get($url)
             ->assertJsonCount(1, 'data')
             ->assertSee('aprende laravel desde 0')
             ->assertDontSee('other article');
@@ -70,7 +70,7 @@ class FilterArticlesTest extends TestCase
 
         $url = route('api.v1.articles.index', ['filter[year]' => 2020]);
 
-        $this->getJson($url)
+        $this->jsonApi()->get($url)
             ->assertJsonCount(1, 'data')
             ->assertSee('Article from 2020')
             ->assertDontSee('Article from 2021');
@@ -96,7 +96,7 @@ class FilterArticlesTest extends TestCase
 
         $url = route('api.v1.articles.index', ['filter[month]' => 2]);
 
-        $this->getJson($url)
+        $this->jsonApi()->get($url)
             ->assertJsonCount(2, 'data')
             ->assertSee('Article from February')
             ->assertDontSee('Article from Junary');
@@ -111,7 +111,7 @@ class FilterArticlesTest extends TestCase
 
         $url = route('api.v1.articles.index', ['filter[unkunow]' => 2]);
 
-        $this->getJson($url)->assertStatus(400)->dump();
+        $this->jsonApi()->get($url)->assertStatus(400);
     }
 
     /** @test  */
@@ -133,7 +133,7 @@ class FilterArticlesTest extends TestCase
 
         $url = route('api.v1.articles.index', ['filter[search]' => 'Aprendible']);
 
-        $this->getJson($url)
+        $this->jsonApi()->get($url)
             ->assertJsonCount(2, 'data')
             ->assertSee('Article from Aprendible')
             ->assertSee('Content Aprendible...')
@@ -165,7 +165,7 @@ class FilterArticlesTest extends TestCase
 
         $url = route('api.v1.articles.index', ['filter[search]' => 'Aprendible Laravel']);
 
-        $this->getJson($url)
+        $this->jsonApi()->get($url)
             ->assertJsonCount(3, 'data')
             ->assertSee('Article from Aprendible')
             ->assertSee('Content Aprendible...')
