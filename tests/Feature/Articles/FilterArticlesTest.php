@@ -111,7 +111,7 @@ class FilterArticlesTest extends TestCase
 
         $url = route('api.v1.articles.index', ['filter[unkunow]' => 2]);
 
-        $this->getJson($url)->assertStatus(400);
+        $this->getJson($url)->assertStatus(400)->dump();
     }
 
     /** @test  */
