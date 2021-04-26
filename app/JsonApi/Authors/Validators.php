@@ -1,11 +1,8 @@
 <?php
 
-namespace App\JsonApi\Articles;
+namespace App\JsonApi\Authors;
 
-use App\Rules\Slug;
 use CloudCreativity\LaravelJsonApi\Validation\AbstractValidators;
-
-use Illuminate\Validation\Rule ;
 
 class Validators extends AbstractValidators
 {
@@ -24,7 +21,7 @@ class Validators extends AbstractValidators
      * @var string[]|null
      *      the allowed fields, an empty array for none allowed, or null to allow all fields.
      */
-    protected $allowedSortParameters = ['title', 'content'];
+    protected $allowedSortParameters = [];
 
     /**
      * The filters a client is allowed send.
@@ -32,7 +29,7 @@ class Validators extends AbstractValidators
      * @var string[]|null
      *      the allowed filters, an empty array for none allowed, or null to allow all.
      */
-    protected $allowedFilteringParameters = ['title','content','year','month','search'];
+    protected $allowedFilteringParameters = [];
 
     /**
      * Get resource validation rules.
@@ -44,18 +41,7 @@ class Validators extends AbstractValidators
     protected function rules($record = null): array
     {
         return [
-
-            'title'=>['required'],
-            'content'=>['required'],
-            'slug'=>[
-                'required',
-                'alpha_dash',
-                // 'not_regex:/_/',
-                // 'not_regex:/^-/',
-                // 'not_regex:/-$/',
-                new Slug,
-              Rule::unique('articles')->ignore($record)
-            ],
+            //
         ];
     }
 

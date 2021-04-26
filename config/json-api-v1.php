@@ -7,7 +7,7 @@ return [
     | Resolver
     |--------------------------------------------------------------------------
     |
-    | The API's resolver is the class that works out the fully qualified
+    | The API's resolver is the class th at works out the fully qualified
     | class name of adapters, schemas, authorizers and validators for your
     | resource types. We recommend using our default implementation but you
     | can override it here if desired.
@@ -67,6 +67,8 @@ return [
     */
     'resources' => [
         'articles' => \App\Models\Article::class,
+        'authors' => \App\User::class,
+
 
     ],
 

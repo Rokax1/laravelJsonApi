@@ -1,6 +1,6 @@
 <?php
 
-namespace App\JsonApi\Articles;
+namespace App\JsonApi\Authors;
 
 use CloudCreativity\LaravelJsonApi\Eloquent\AbstractAdapter;
 use CloudCreativity\LaravelJsonApi\Pagination\StandardStrategy;
@@ -10,9 +10,6 @@ use Illuminate\Support\Collection;
 class Adapter extends AbstractAdapter
 {
 
-    protected $fillable = ['title', 'slug', 'content'];
-
-    protected $guarded = ['id'];
     /**
      * Mapping of JSON API attribute field names to model keys.
      *
@@ -34,7 +31,7 @@ class Adapter extends AbstractAdapter
      */
     public function __construct(StandardStrategy $paging)
     {
-        parent::__construct(new \App\Models\Article(), $paging);
+        parent::__construct(new \App\User(), $paging);
     }
 
     /**
@@ -45,15 +42,6 @@ class Adapter extends AbstractAdapter
     protected function filter($query, Collection $filters)
     {
         $this->filterWithScopes($query, $filters);
-    }
-
-    protected function fillAttributes($article, Collection $attributes)
-    {
-
-        $article->fill($attributes->toArray());
-        $article->user_id =auth()->id();
-
-
     }
 
 }
