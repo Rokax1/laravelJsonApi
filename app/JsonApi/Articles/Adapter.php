@@ -13,6 +13,11 @@ class Adapter extends AbstractAdapter
     protected $fillable = ['title', 'slug', 'content'];
 
     protected $guarded = ['id'];
+
+    protected $includePaths=[
+        'authors'=>'user'
+
+    ];
     /**
      * Mapping of JSON API attribute field names to model keys.
      *
@@ -54,6 +59,11 @@ class Adapter extends AbstractAdapter
         $article->user_id =auth()->id();
 
 
+    }
+
+    public function authors(){
+
+        return $this->belongsTo('user');
     }
 
 }

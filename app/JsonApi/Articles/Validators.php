@@ -16,7 +16,7 @@ class Validators extends AbstractValidators
      * @var string[]|null
      *      the allowed paths, an empty array for none allowed, or null to allow all paths.
      */
-    protected $allowedIncludePaths = [];
+    protected $allowedIncludePaths = ['authors'];
 
     /**
      * The sort field names a client is allowed send.
@@ -41,7 +41,7 @@ class Validators extends AbstractValidators
      *      the record being updated, or null if creating a resource.
      * @return mixed
      */
-    protected function rules($record = null): array
+    protected function rules($record ,$data): array
     {
         return [
 
