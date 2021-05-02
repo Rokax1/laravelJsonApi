@@ -18,7 +18,7 @@ class UpdateArticleTest extends TestCase
     public function guest_users_cannot_update_articles()
     {
 
-        $article = factory(Article::class)->create();
+        $article = Article::factory()->create();
 
 
         $this->jsonApi()->patch(route('api.v1.articles.update', $article))
@@ -31,7 +31,7 @@ class UpdateArticleTest extends TestCase
     public function authenticated_users_can_update_their_articles()
     {
 
-        $article = factory(Article::class)->create();
+        $article = Article::factory()->create();
 
         Sanctum::actingAs($article->user);
 
@@ -62,9 +62,9 @@ class UpdateArticleTest extends TestCase
       public function authenticated_users_cannot_update_others_articles()
       {
 
-          $article = factory(Article::class)->create();
+          $article = Article::factory()->create();
 
-          Sanctum::actingAs(factory(User::class)->create());
+          Sanctum::actingAs(User::factory()->create());
 
           $this->jsonApi()
               ->content([
@@ -92,7 +92,7 @@ class UpdateArticleTest extends TestCase
     public function can_update_the_titile_only()
     {
 
-        $article = factory(Article::class)->create();
+        $article = Article::factory()->create();
 
         Sanctum::actingAs($article->user);
 
@@ -121,7 +121,7 @@ class UpdateArticleTest extends TestCase
     public function can_update_the_slug_only()
     {
 
-        $article = factory(Article::class)->create();
+        $article = Article::factory()->create();
 
         Sanctum::actingAs($article->user);
 

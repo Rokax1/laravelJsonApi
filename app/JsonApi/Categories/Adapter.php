@@ -1,7 +1,8 @@
 <?php
 
-namespace App\JsonApi\Authors;
+namespace App\JsonApi\Categories;
 
+use App\Models\Category;
 use CloudCreativity\LaravelJsonApi\Eloquent\AbstractAdapter;
 use CloudCreativity\LaravelJsonApi\Pagination\StandardStrategy;
 use Illuminate\Database\Eloquent\Builder;
@@ -31,7 +32,7 @@ class Adapter extends AbstractAdapter
      */
     public function __construct(StandardStrategy $paging)
     {
-        parent::__construct(new \App\User(), $paging);
+        parent::__construct(new \App\Models\Category(), $paging);
     }
 
     /**
@@ -47,7 +48,6 @@ class Adapter extends AbstractAdapter
     public function articles(){
 
         return $this->hasMany();
-
     }
 
 }

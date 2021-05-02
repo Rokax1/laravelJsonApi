@@ -15,7 +15,7 @@ class IncludeAuthorsTest extends TestCase
 
     public function can_include_authors()
     {
-        $article = factory(Article::class)->create();
+        $article = Article::factory()->create();
 
 
         //Forma numero 1
@@ -45,7 +45,7 @@ class IncludeAuthorsTest extends TestCase
 
      public function can_fetch_related_authors()
      {
-         $article = factory(Article::class)->create();
+         $article = Article::factory()->create();
 
          $this->jsonApi()
              ->get(route('api.v1.articles.relationships.authors',$article))

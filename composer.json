@@ -14,7 +14,6 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "7.0.1",
         "laravel/framework": "^8.0",
-        "laravel/legacy-factories": "^1.1",
         "laravel/sanctum": "^2.9",
         "laravel/tinker": "^2.5"
     },
@@ -39,12 +38,10 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
-        },
-        "classmap": [
-            "database/seeds",
-            "database/factories"
-        ]
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
     },
     "autoload-dev": {
         "psr-4": {

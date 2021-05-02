@@ -16,10 +16,10 @@ class FilterArticlesTest extends TestCase
 
     public function can_filter_articles_by_title()
     {
-        factory(Article::class)->create([
+        Article::factory()->create([
             'title' => 'aprende laravel desde 0'
         ]);
-        factory(Article::class)->create([
+        Article::factory()->create([
             'title' => 'other article'
         ]);
 
@@ -40,10 +40,10 @@ class FilterArticlesTest extends TestCase
 
     public function can_filter_articles_by_content()
     {
-        factory(Article::class)->create([
+        Article::factory()->create([
             'content' => '<div> aprende laravel desde 0 </div>'
         ]);
-        factory(Article::class)->create([
+        Article::factory()->create([
             'content' => '<div> other article </div>'
         ]);
 
@@ -59,11 +59,11 @@ class FilterArticlesTest extends TestCase
 
     public function can_filter_articles_by_year()
     {
-        factory(Article::class)->create([
+        Article::factory()->create([
             'title' => 'Article from 2020',
             'created_at' => now()->year(2020)
         ]);
-        factory(Article::class)->create([
+        Article::factory()->create([
             'title' => 'Article from 2021',
             'created_at' => now()->year(2021)
         ]);
@@ -80,21 +80,21 @@ class FilterArticlesTest extends TestCase
 
     public function can_filter_articles_by_month()
     {
-        factory(Article::class)->create([
+        Article::factory()->create([
             'title' => 'Article from February',
-            'created_at' => now()->month(2)
+            'created_at' => now()->month(3)
         ]);
-        factory(Article::class)->create([
+        Article::factory()->create([
             'title' => 'Another Article from February',
-            'created_at' => now()->month(2)
+            'created_at' => now()->month(3)
         ]);
-        factory(Article::class)->create([
+        Article::factory()->create([
             'title' => 'Article from Junary',
             'created_at' => now()->month(1)
         ]);
 
 
-        $url = route('api.v1.articles.index', ['filter[month]' => 2]);
+        $url = route('api.v1.articles.index', ['filter[month]' => 3]);
 
         $this->jsonApi()->get($url)
             ->assertJsonCount(2, 'data')
@@ -105,7 +105,7 @@ class FilterArticlesTest extends TestCase
     /** @test  */
     public function cannot_filter_articles_by_unkunow_filters()
     {
-        factory(Article::class)->create();
+        Article::factory()->create();
 
 
 
@@ -117,15 +117,15 @@ class FilterArticlesTest extends TestCase
     /** @test  */
     public function can_search_articles_by_title_and_content()
     {
-        factory(Article::class)->create([
+        Article::factory()->create([
             'title' => 'Article from Aprendible',
             'content' => 'content'
         ]);
-        factory(Article::class)->create([
+        Article::factory()->create([
             'title' => 'Another Article ',
             'content' => 'Content Aprendible...'
         ]);
-        factory(Article::class)->create([
+        Article::factory()->create([
             'title' => 'Title 2',
             'content' => 'content 2'
         ]);
@@ -145,19 +145,19 @@ class FilterArticlesTest extends TestCase
 
     public function can_search_articles_by_title_and_content_whit_multiple_terms()
     {
-        factory(Article::class)->create([
+        Article::factory()->create([
             'title' => 'Article from Aprendible',
             'content' => 'content'
         ]);
-        factory(Article::class)->create([
+        Article::factory()->create([
             'title' => 'Another Article ',
             'content' => 'Content Aprendible...'
         ]);
-        factory(Article::class)->create([
+        Article::factory()->create([
             'title' => 'Another Laravel Article',
             'content' => 'Content...'
         ]);
-        factory(Article::class)->create([
+        Article::factory()->create([
             'title' => 'Title 2',
             'content' => 'content 2'
         ]);

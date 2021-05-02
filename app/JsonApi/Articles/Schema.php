@@ -40,8 +40,6 @@ class Schema extends SchemaProvider
 
     public function getRelationships($article, $isPrimary, array $includeRelationships)
     {
-
-
         return [
             'authors' => [
 
@@ -50,6 +48,15 @@ class Schema extends SchemaProvider
                 self::SHOW_DATA => isset($includeRelationships['authors']),
                 self::DATA => function () use ($article) {
                     return $article->user;
+                }
+            ],
+            'categories' => [
+
+                self::SHOW_RELATED => true,
+                self::SHOW_SELF => true,
+                self::SHOW_DATA => isset($includeRelationships['categories']),
+                self::DATA => function () use ($article) {
+                    return $article->category;
                 }
             ]
 

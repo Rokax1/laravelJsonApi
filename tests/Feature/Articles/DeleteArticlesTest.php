@@ -18,7 +18,7 @@ class DeleteArticlesTest extends TestCase
     public function guest_user_canot_delete_articles()
     {
 
-        $article = factory(Article::class)->create();
+        $article = Article::factory()->create();
 
         $this->jsonApi()->delete(route('api.v1.articles.delete',$article))
         ->assertStatus(401);
@@ -31,7 +31,7 @@ class DeleteArticlesTest extends TestCase
     public function guest_user_can_delete_their_articles()
     {
 
-        $article = factory(Article::class)->create();
+        $article = Article::factory()->create();
 
         Sanctum::actingAs($article->user);
 
@@ -45,9 +45,9 @@ class DeleteArticlesTest extends TestCase
     public function guest_user_cannot_delete_others_articles()
     {
 
-        $article = factory(Article::class)->create();
+        $article = Article::factory()->create();
 
-        Sanctum::actingAs(factory(User::class)->create());
+        Sanctum::actingAs(User::factory()->create());
 
         $this->jsonApi()->delete(route('api.v1.articles.delete',$article))
         ->assertStatus(403);

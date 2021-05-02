@@ -1,9 +1,9 @@
 <?php
 
-namespace App\JsonApi\Authors;
+namespace App\JsonApi\Categories;
 
+use App\Models\Category;
 use Neomerx\JsonApi\Schema\SchemaProvider;
-use App\User;
 
 class Schema extends SchemaProvider
 {
@@ -11,10 +11,10 @@ class Schema extends SchemaProvider
     /**
      * @var string
      */
-    protected $resourceType = 'authors';
+    protected $resourceType = 'categories';
 
     /**
-     * @param \App\User $resource
+     * @param Category $resource
      *      the domain record being serialized.
      * @return string
      */
@@ -24,21 +24,21 @@ class Schema extends SchemaProvider
     }
 
     /**
-     * @param \App\User $resource
+     * @param Category $resource
      *      the domain record being serialized.
      * @return array
      */
-    public function getAttributes($resource)
+    public function getAttributes($category)
     {
         return [
-            'name'=>$resource->name,
-            //''=>,
-            'created-at' => $resource->created_at->toAtomString(),
-            'updated-at' => $resource->updated_at->toAtomString(),
+            'name'=>$category->name,
+            'slug'=>$category->slug,
+            // 'createdAt' => $category->created_at,
+            // 'updatedAt' => $category->updated_at,
         ];
     }
 
-    public function getRelationships($author, $isPrimary, array $includeRelationships)
+    public function getRelationships($category, $isPrimary, array $includeRelationships)
     {
 
 
@@ -48,8 +48,8 @@ class Schema extends SchemaProvider
                 self::SHOW_RELATED => true,
                 self::SHOW_SELF => true,
                 self::SHOW_DATA => isset($includeRelationships['articles']),
-                self::DATA => function () use ($author) {
-                    return $author->articles;
+                self::DATA => function () use ($category) {
+                    return $category->articles;
                 }
             ]
 

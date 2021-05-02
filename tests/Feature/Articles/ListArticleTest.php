@@ -20,7 +20,7 @@ class ListArticleTest extends TestCase
 
 
 
-        $article = factory(Article::class)->create();
+        $article = Article::factory()->create();
 
 
 
@@ -56,7 +56,7 @@ class ListArticleTest extends TestCase
     public function can_fetch_all_article()
     {
 
-        $articles = factory(Article::class)->times(3)->create();
+        $articles = Article::factory()->times(3)->create();
 
         $response = $this->jsonApi()->get(route('api.v1.articles.index'));
 
