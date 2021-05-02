@@ -103,4 +103,19 @@ class Article extends Model
 
 
     }
+
+public function scopeCategories(Builder $query, $values){
+
+    //where has restrigira los articulos a los que tienen una categoria asociada
+
+
+
+    $query->whereHas('category',function($q) use ($values){
+
+        $q->whereIn('slug',explode(',',$values));
+    });
+
+}
+
+
 }
