@@ -57,7 +57,7 @@ class Handler extends ExceptionHandler
 
         if ($this->renderJsonApi($request,$exception)) {
 
-          return $this->renderJsonApi($request,$exception);
+         // return $this->renderJsonApi($request,$exception);
         }
         return parent::render($request, $exception);
     }

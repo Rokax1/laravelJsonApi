@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use CloudCreativity\LaravelJsonApi\Facades\JsonApi;
@@ -22,6 +23,7 @@ use CloudCreativity\LaravelJsonApi\Facades\JsonApi;
 
 JsonApi::register('v1')->routes(function($api){
 
+
     // a nivel de rutas solo se puede ocipar hasOne y hasMany si se necesita otra ocupar adapter
     $api->resource('articles')->relationships(function($api){
         $api->hasOne('authors');
@@ -37,6 +39,8 @@ JsonApi::register('v1')->routes(function($api){
         $api->hasMany('articles')->except('replace','add','remove');
     });
 
+
+    Route::post('login',[LoginController::class,'login'])->name('login');
     //->only('read','index','create','update','delete');
     // $api->resource('articles')->only('create','update','delete')->middleware('auth');
     // $api->resource('articles')->except('create','update','delete');
