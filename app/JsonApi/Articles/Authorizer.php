@@ -6,6 +6,7 @@ use CloudCreativity\LaravelJsonApi\Auth\AbstractAuthorizer;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class Authorizer extends AbstractAuthorizer
 {
@@ -41,6 +42,12 @@ class Authorizer extends AbstractAuthorizer
     public function create($type, $request)
     {
         $this->authenticate();
+
+        if ($request->has('data.relationships.authors')) {
+
+            $this->authorize('create',[$type,$request]);
+
+        }
     }
 
     /**
@@ -92,5 +99,12 @@ class Authorizer extends AbstractAuthorizer
         // TODO: Implement delete() method.
 
         $this->can('delete', $article);
+    }
+
+
+    public function modifyRelationship($record, $field, $request)
+    {
+        $ability= Str::camel('modify-'.$field);
+            $this->can($ability,$record,$request);
     }
 }

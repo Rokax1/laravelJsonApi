@@ -24,8 +24,8 @@ JsonApi::register('v1')->routes(function($api){
 
     // a nivel de rutas solo se puede ocipar hasOne y hasMany si se necesita otra ocupar adapter
     $api->resource('articles')->relationships(function($api){
-        $api->hasOne('authors')->except('replace');
-        $api->hasOne('categories')->except('replace');
+        $api->hasOne('authors');
+        $api->hasOne('categories');
     });
 
     $api->resource('authors')->only('index','read')->relationships(function($api){

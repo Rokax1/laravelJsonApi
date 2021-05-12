@@ -55,6 +55,7 @@ class UpdateCategories extends TestCase
         //  ]);
      }
 
+
      /** @test  */
     public function can_update_the_name_only()
     {

@@ -3,9 +3,10 @@
 namespace App\JsonApi\Articles;
 
 use App\Rules\Slug;
+use CloudCreativity\LaravelJsonApi\Rules\HasOne;
 use CloudCreativity\LaravelJsonApi\Validation\AbstractValidators;
 
-use Illuminate\Validation\Rule ;
+use Illuminate\Validation\Rule;
 
 class Validators extends AbstractValidators
 {
@@ -16,7 +17,7 @@ class Validators extends AbstractValidators
      * @var string[]|null
      *      the allowed paths, an empty array for none allowed, or null to allow all paths.
      */
-    protected $allowedIncludePaths = ['authors','categories'];
+    protected $allowedIncludePaths = ['authors', 'categories'];
 
     /**
      * The sort field names a client is allowed send.
@@ -32,7 +33,7 @@ class Validators extends AbstractValidators
      * @var string[]|null
      *      the allowed filters, an empty array for none allowed, or null to allow all.
      */
-    protected $allowedFilteringParameters = ['title','content','year','month','search','categories'];
+    protected $allowedFilteringParameters = ['title', 'content', 'year', 'month', 'search', 'categories'];
 
     /**
      * Get resource validation rules.
@@ -41,21 +42,30 @@ class Validators extends AbstractValidators
      *      the record being updated, or null if creating a resource.
      * @return mixed
      */
-    protected function rules($record ,$data): array
+    protected function rules($record, $data): array
     {
         return [
 
-            'title'=>['required'],
-            'content'=>['required'],
-            'slug'=>[
+            'title' => ['required'],
+            'content' => ['required'],
+            'slug' => [
                 'required',
                 'alpha_dash',
                 // 'not_regex:/_/',
                 // 'not_regex:/^-/',
                 // 'not_regex:/-$/',
                 new Slug,
-              Rule::unique('articles')->ignore($record)
+                Rule::unique('articles')->ignore($record)
             ],
+            'authors' => [
+                Rule::requiredIf(!$record),
+                new HasOne('authors')
+            ],
+            'categories' => [
+                Rule::requiredIf(!$record),
+                new HasOne('categories')
+
+            ]
         ];
     }
 
@@ -70,5 +80,4 @@ class Validators extends AbstractValidators
             //
         ];
     }
-
 }

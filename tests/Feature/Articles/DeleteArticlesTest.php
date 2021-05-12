@@ -20,41 +20,47 @@ class DeleteArticlesTest extends TestCase
 
         $article = Article::factory()->create();
 
-        $this->jsonApi()->delete(route('api.v1.articles.delete',$article))
-        ->assertStatus(401);
-
+        $this->jsonApi()->delete(route('api.v1.articles.delete', $article))
+            ->assertStatus(401);
     }
 
 
     /** @test  */
 
-    public function guest_user_can_delete_their_articles()
+    public function authenticated_user_can_delete_their_articles()
+    {
+
+        $article = Article::factory()->create();
+
+        Sanctum::actingAs($article->user,['articles:delete']);
+
+        $this->jsonApi()->delete(route('api.v1.articles.delete', $article))
+            ->assertStatus(204);
+    }
+
+    /** @test  */
+
+    public function authenticated_user_cannot_delete_their_articles_without_permissions()
     {
 
         $article = Article::factory()->create();
 
         Sanctum::actingAs($article->user);
 
-        $this->jsonApi()->delete(route('api.v1.articles.delete',$article))
-        ->assertStatus(204);
-
+        $this->jsonApi()->delete(route('api.v1.articles.delete', $article))
+            ->assertStatus(403);
     }
 
     /** @test  */
 
-    public function guest_user_cannot_delete_others_articles()
+    public function authenticated_user_cannot_delete_others_articles()
     {
 
         $article = Article::factory()->create();
 
         Sanctum::actingAs(User::factory()->create());
 
-        $this->jsonApi()->delete(route('api.v1.articles.delete',$article))
-        ->assertStatus(403);
-
+        $this->jsonApi()->delete(route('api.v1.articles.delete', $article))
+            ->assertStatus(403);
     }
-
-
-
-
 }
