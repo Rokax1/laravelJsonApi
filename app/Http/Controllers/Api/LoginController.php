@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Responses\TokenReponse;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -26,10 +27,11 @@ class LoginController extends Controller
                 'email' => [__('auth.failed')]
             ]);
         }
+        return new TokenReponse($user);
 
-        return response()->json([
-            'plain-text-token' => $user->createToken($request->divice_name)->plainTextToken
-        ]);
+        // return response()->json([
+        //     'plain-text-token' => $user->createToken($request->divice_name)->plainTextToken
+        // ]);
     }
 
 
