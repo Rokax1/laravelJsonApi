@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\Permission;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -27,10 +28,41 @@ class LoginTest extends TestCase
         $token = $response->json('plain-text-token');
 
         $this->assertNotNull(
-            PersonalAccessToken::findToken($token),
+         PersonalAccessToken::findToken($token),
             'the plain text token id invalid'
         );
     }
+
+        /** @test  */
+
+        public function user_permissions_are_assigned_as_abilities_to_the_token_response()
+        {
+
+            $user = User::factory()->create();
+
+            $permision1 = Permission::factory()->create([
+                'name'=> $artcilesCreatePermission='articles:create'
+            ]);
+            $permision2 = Permission::factory()->create([
+                'name'=> $artcilesUpdatePermission='articles:update'
+            ]);
+                $user->givePermissionTo($permision1);
+                $user->givePermissionTo($permision2);
+
+            $response = $this->postJson(route('api.v1.login'), [
+                'email' => $user->email,
+                'password' => 'password',
+                'divice_name' => 'iPhone de ' . $user->name
+            ]);
+            $token = $response->json('plain-text-token');
+
+
+               $dbToken= PersonalAccessToken::findToken($token);
+
+            $this->assertTrue($dbToken->can($artcilesCreatePermission));
+            $this->assertTrue($dbToken->can($artcilesUpdatePermission));
+            $this->assertFalse($dbToken->can('articles:delete'));
+        }
 
     /** @test  */
     public function cannot_login_twice()

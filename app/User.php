@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\Article;
+use App\Models\Permission;
 use App\Models\Traits\HasUuid;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -49,5 +50,17 @@ class User extends Authenticatable
         return $this->hasMany(Article::class);
     }
 
+
+    public function permissions(){
+
+        return $this->belongsToMany(Permission::class);
+    }
+
+
+    public function givePermissionTo(Permission $permission){
+
+        $this->permissions()->syncWithoutDetaching($permission);
+
+    }
 
 }
