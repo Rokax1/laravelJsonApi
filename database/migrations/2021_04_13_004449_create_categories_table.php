@@ -23,6 +23,10 @@ class CreateCategoriesTable extends Migration
         });
 
         Schema::enableForeignKeyConstraints();
+
+        schema::table('articles',function(Blueprint $table){
+            $table->foreignId('category_id')->nullable()->constrained()->cascadeOnDelete();
+        });
     }
 
     /**

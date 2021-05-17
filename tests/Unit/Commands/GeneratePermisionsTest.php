@@ -2,17 +2,35 @@
 
 namespace Tests\Unit\Commands;
 
-use PHPUnit\Framework\TestCase;
+use App\Models\Permission;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class GeneratePermisionsTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
-    public function testExample()
+    use RefreshDatabase;
+
+
+    /** @test  */
+
+    public function can_geberate_permissions_for_registered_api_resources()
     {
-        $this->assertTrue(true);
+
+        config([
+            'json-api-v1.resources'=>[
+                'articles' => \App\Models\Article::class,
+            ]
+        ]);
+
+
+        $this->artisan('generate:permissions')
+            ->expectsOutput('Permissions generated!');
+
+            //dd(Permission::pluck('name')->toArray());
+
+            $this->artisan('generate:permissions')
+            ->expectsOutput('Permissions generated!');
+
+            $this->assertDatabaseCount('permissions', count(Permission::$abilities));
     }
 }
