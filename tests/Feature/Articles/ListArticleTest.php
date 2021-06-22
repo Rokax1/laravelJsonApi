@@ -59,7 +59,7 @@ class ListArticleTest extends TestCase
         $articles = Article::factory()->times(3)->create();
 
         $response = $this->jsonApi()->get(route('api.v1.articles.index'));
-
+dd($response);
         $response->assertJson([
 
             'data' => [

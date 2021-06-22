@@ -24,9 +24,9 @@ class ArticleFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->sentence(1),
+            'title' => $this->faker->sentence(3),
             'slug' => $this->faker->slug,
-            'content' => $this->faker->sentence(1),
+            'content' => $this->faker->paragraphs(3, true),
             'category_id' =>Category::factory(),
             'user_id' => User::factory(),
         ];

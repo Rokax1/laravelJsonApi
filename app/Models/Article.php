@@ -16,7 +16,7 @@ class Article extends Model
 
     public $allowedSorts = ['title', 'content'];
 
-    public $type='articles';
+    public $type = 'articles';
 
 
 
@@ -41,15 +41,15 @@ class Article extends Model
 
 
 
-    public function fields(){
+    public function fields()
+    {
 
         return [
-            'title'=>$this->title,
-            'slug'=>$this->slug,
-            'content'=>$this->content,
+            'title' => $this->title,
+            'slug' => $this->slug,
+            'content' => $this->content,
 
         ];
-
     }
 
 
@@ -66,7 +66,7 @@ class Article extends Model
     }
 
 
-// Scopes
+    // Scopes
 
 
     public function scopeTitle(Builder $query, $value)
@@ -98,24 +98,32 @@ class Article extends Model
 
         foreach (Str::of($values)->explode(' ') as $key => $value) {
             $query->orWhere('title', 'LIKE', "%{$value}%")
-            ->orWhere('content', 'LIKE', "%{$value}%");
+                ->orWhere('content', 'LIKE', "%{$value}%");
         }
-
-
     }
 
-public function scopeCategories(Builder $query, $values){
+    public function scopeCategories(Builder $query, $values)
+    {
 
-    //where has restrigira los articulos a los que tienen una categoria asociada
-
-
-
-    $query->whereHas('category',function($q) use ($values){
-
-        $q->whereIn('slug',explode(',',$values));
-    });
-
-}
+        //where has restrigira los articulos a los que tienen una categoria asociada
 
 
+
+        $query->whereHas('category', function ($q) use ($values) {
+
+            $q->whereIn('slug', explode(',', $values));
+        });
+    }
+
+
+    public function scopeAuthors(Builder $query, $values)
+    {
+
+        //where has restrigira los articulos a los que tienen una categoria asociada
+
+        $query->whereHas('user', function ($q) use ($values) {
+
+            $q->whereIn('name', explode(',', $values));
+        });
+    }
 }

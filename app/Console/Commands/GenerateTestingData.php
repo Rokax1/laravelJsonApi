@@ -71,7 +71,7 @@ class GenerateTestingData extends Command
         $this->line("");
         $this->info("Category Id");
 
-        $this->line($articles->first()->category->id);
+        $this->line($articles->first()->category->slug);
 
 
 

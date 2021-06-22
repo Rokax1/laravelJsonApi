@@ -4,6 +4,7 @@ namespace Tests\Feature\Articles;
 
 use App\Models\Article;
 use App\Models\Category;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -176,24 +177,42 @@ class FilterArticlesTest extends TestCase
 
     /** @test  */
 
-    function can_flter_articles_by_category(){
+    function can_flter_articles_by_category()
+    {
 
         Article::factory()->count(2)->create();
         $category = Category::factory()->hasArticles(2)->create();
 
         $this->jsonApi()
-        ->filter(['categories'=> $category->getRouteKey()])
-        ->get(route('api.v1.articles.index'))
+            ->filter(['categories' => $category->getRouteKey()])
+            ->get(route('api.v1.articles.index'))
 
-        ->assertJsonCount(2,'data');
+            ->assertJsonCount(2, 'data');
+    }
+
+    /** @test  */
+
+    function can_flter_articles_by_authors()
+    {
+
+        $author= User::factory()->hasArticles(2)->create();
+
+        Article::factory()->count(2)->create();
 
 
+        $this->jsonApi()
+            ->filter(['authors' => $author->name])
+            ->get(route('api.v1.articles.index'))
+
+            ->assertJsonCount(2, 'data');
     }
 
 
-     /** @test  */
 
-     function can_flter_articles_by__multiple_category(){
+    /** @test  */
+
+    function can_flter_articles_by__multiple_category()
+    {
 
         Article::factory()->count(2)->create();
 
@@ -201,15 +220,34 @@ class FilterArticlesTest extends TestCase
         $category2 = Category::factory()->hasArticles(3)->create();
 
         $this->jsonApi()
-        ->filter([
+            ->filter([
 
-            'categories'=> $category1->getRouteKey().','.$category2->getRouteKey()
+                'categories' => $category1->getRouteKey() . ',' . $category2->getRouteKey()
 
             ])
-        ->get(route('api.v1.articles.index'))
+            ->get(route('api.v1.articles.index'))
 
-        ->assertJsonCount(5,'data');
-
-
+            ->assertJsonCount(5, 'data');
     }
+
+       /** @test  */
+
+       function can_flter_articles_by__multiple_authors()
+       {
+
+            $author1= User::factory()->hasArticles(2)->create();
+            $author2= User::factory()->hasArticles(3)->create();
+
+           Article::factory()->count(2)->create();
+
+           $this->jsonApi()
+               ->filter([
+
+                   'authors' => $author1->name . ',' . $author2->name
+
+               ])
+               ->get(route('api.v1.articles.index'))
+
+               ->assertJsonCount(5, 'data');
+       }
 }
